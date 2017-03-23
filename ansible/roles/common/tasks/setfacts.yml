@@ -1,9 +1,9 @@
 - name: show ansible versions
-  debug: msg="You are using Ansible {{ ansible_version.full }} on {{ansible_os_family}}. Major version is {{ ansible_version.major }}, minor version is {{ ansible_version.minor }}, revision version is {{ ansible_version.revision }}. The current supported version for ala-install is {{ supported_ansible_version.full }}."
+  debug: msg="You are using Ansible {{ ansible_version.full }} on {{ansible_os_family}}. The current minimum supported version for ala-install is {{ supported_ansible_version.full }}."
 
 - name: check the ansible version
   pause: prompt="You are not using the minimum supported version of Ansible. The minimum supported version is {{ supported_ansible_version.full }}. You are using {{ ansible_version.full }}. Proceed at your own risk. Press enter to continue"
-  when: supported_ansible_version.full < ansible_version.full
+  when: ansible_version.full | version_compare(supported_ansible_version.full, '<')
   tags:
     - version_check
 
